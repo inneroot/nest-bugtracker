@@ -1,41 +1,32 @@
 import { Injectable, NotFoundException } from '@nestjs/common'
-import { Bugreport } from './bugreport.interface'
+import { InjectRepository } from '@nestjs/typeorm'
+import { BugreportEntity } from 'src/entitys/bugreports.entity'
+import { Repository } from 'typeorm'
+import { CreateBugreportDto } from './dto/create-bugreport.dto'
 
 @Injectable()
 export class BugreportsService {
-  private readonly bugreports: Bugreport[] = []
+  constructor(
+    @InjectRepository(BugreportEntity)
+    private bugreportRepository: Repository<BugreportEntity>,
+  ) { }
 
-  private invalidId(id: string) {
-    return isNaN(+id) || +id < 0 || +id > this.bugreports.length
+  findAll(): Promise<BugreportEntity[]> {
+    return this.bugreportRepository.find()
   }
 
-  create(bugreport: Bugreport) {
-    this.bugreports.push({ id: this.bugreports.length + 1, ...bugreport })
+  findOne(id: string): Promise<BugreportEntity> {
+    return this.bugreportRepository.findOne(id)
   }
 
-  update(id: string, bugreport: Bugreport): Bugreport {
-    if (this.invalidId(id)) {
-      throw new NotFoundException(`invalid ID ${+id}`)
-    }
-    this.bugreports[+id - 1] = { id: +id, ...bugreport }
-    return this.bugreports[+id - 1]
+  async create(bugreport: CreateBugreportDto) {
+    const newBugreport = new BugreportEntity()
+    newBugreport.text = bugreport.text
+    newBugreport.title = bugreport.title
+    await this.bugreportRepository.save(newBugreport)
   }
 
-  findById(id: string): Bugreport {
-    if (this.invalidId(id)) {
-      throw new NotFoundException(`invalid ID ${+id}`)
-    }
-    return this.bugreports[+id - 1]
-  }
-
-  findAll(): Bugreport[] {
-    return this.bugreports
-  }
-
-  delete(id: string) {
-    if (this.invalidId(id)) {
-      throw new NotFoundException(`invalid ID ${+id}`)
-    }
-    this.bugreports.splice(+id - 1, 1)
+  async remove(id: string): Promise<void> {
+    await this.bugreportRepository.delete(id)
   }
 }

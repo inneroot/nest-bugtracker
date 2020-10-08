@@ -1,5 +1,5 @@
 import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common'
-import { Bugreport } from './bugreport.interface'
+import { BugreportEntity } from 'src/entitys/bugreports.entity'
 import { BugreportsService } from './bugreports.service'
 import { CreateBugreportDto } from './dto/create-bugreport.dto'
 import { UpdateBugreportDto } from './dto/update-bugreport.dto'
@@ -10,26 +10,26 @@ export class BugreportsController {
 
   @Post()
   async create(@Body() createBugreportDto: CreateBugreportDto) {
-    this.bugreportsService.create(createBugreportDto)
+    await this.bugreportsService.create(createBugreportDto)
   }
 
-  @Put(':id')
-  async update(@Param('id') id: string, @Body() updateBugreportDto: UpdateBugreportDto) {
-    return this.bugreportsService.update(id, updateBugreportDto)
-  }
+  // @Put(':id')
+  // async update(@Param('id') id: string, @Body() updateBugreportDto: UpdateBugreportDto) {
+  //   return this.bugreportsService.update(id, updateBugreportDto)
+  // }
 
   @Get()
-  async findAll(): Promise<Bugreport[]> {
+  async findAll(): Promise<BugreportEntity[]> {
     return this.bugreportsService.findAll()
   }
 
   @Get(':id')
-  async findById(@Param('id') id: string): Promise<Bugreport> {
-    return this.bugreportsService.findById(id)
+  async findOne(@Param('id') id: string): Promise<BugreportEntity> {
+    return this.bugreportsService.findOne(id)
   }
 
   @Delete(':id')
-  async deleteOne(@Param('id') id: string) {
-    return this.bugreportsService.delete(id)
+  async remove(@Param('id') id: string) {
+    return this.bugreportsService.remove(id)
   }
 }
