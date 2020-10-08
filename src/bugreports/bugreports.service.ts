@@ -31,4 +31,11 @@ export class BugreportsService {
   findAll(): Bugreport[] {
     return this.bugreports
   }
+
+  delete(id: string) {
+    if (this.invalidId(id)) {
+      throw new NotFoundException(`invalid ID ${+id}`)
+    }
+    this.bugreports.splice(+id - 1, 1)
+  }
 }

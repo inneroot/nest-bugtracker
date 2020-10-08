@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common'
+import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common'
 import { Bugreport } from './bugreport.interface'
 import { BugreportsService } from './bugreports.service'
 import { CreateBugreportDto } from './dto/create-bugreport.dto'
@@ -15,7 +15,6 @@ export class BugreportsController {
 
   @Put(':id')
   async update(@Param('id') id: string, @Body() updateBugreportDto: UpdateBugreportDto) {
-    console.log(`Put :id ${id}`)
     return this.bugreportsService.update(id, updateBugreportDto)
   }
 
@@ -27,5 +26,10 @@ export class BugreportsController {
   @Get(':id')
   async findById(@Param('id') id: string): Promise<Bugreport> {
     return this.bugreportsService.findById(id)
+  }
+
+  @Delete(':id')
+  async deleteOne(@Param('id') id: string) {
+    return this.bugreportsService.delete(id)
   }
 }
