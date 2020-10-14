@@ -1,5 +1,5 @@
 import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common'
-import { BugreportEntity } from 'src/entitys/bugreports.entity'
+import { Bugreport } from 'src/entitys/bugreports.entity'
 import { BugreportsService } from './bugreports.service'
 import { CreateBugreportDto } from './dto/create-bugreport.dto'
 import { UpdateBugreportDto } from './dto/update-bugreport.dto'
@@ -19,12 +19,12 @@ export class BugreportsController {
   // }
 
   @Get()
-  async findAll(): Promise<BugreportEntity[]> {
+  async findAll(): Promise<Bugreport[]> {
     return this.bugreportsService.findAll()
   }
 
   @Get(':id')
-  async findOne(@Param('id') id: string): Promise<BugreportEntity> {
+  async findOne(@Param('id') id: string): Promise<Bugreport> {
     return this.bugreportsService.findOne(id)
   }
 
