@@ -1,16 +1,14 @@
 import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common'
-import { Bugreport } from 'src/entitys/bugreports.entity'
 import { BugreportsService } from './bugreports.service'
-import { CreateBugreportDto } from './dto/create-bugreport.dto'
-import { UpdateBugreportDto } from './dto/update-bugreport.dto'
+import { Bugreport } from '../entitys/bugreports.entity'
 
 @Controller('bugreports')
 export class BugreportsController {
   constructor(private bugreportsService: BugreportsService) { }
 
   @Post()
-  async create(@Body() createBugreportDto: CreateBugreportDto) {
-    await this.bugreportsService.create(createBugreportDto)
+  async create(@Body() newBugreport: Bugreport) {
+    await this.bugreportsService.create(newBugreport)
   }
 
   // @Put(':id')
