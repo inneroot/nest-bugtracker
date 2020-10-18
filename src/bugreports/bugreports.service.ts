@@ -10,13 +10,14 @@ export class BugreportsService {
     private bugreportRepository: Repository<Bugreport>,
   ) { }
 
-  findAll(): Promise<Bugreport[]> {
-    return this.bugreportRepository.find()
+  async findAll(): Promise<Bugreport[]> {
+    return await this.bugreportRepository.find()
   }
 
-  findOne(id: string): Promise<Bugreport> {
-    const oneBugreport = this.bugreportRepository.findOne(id)
-    if (!oneBugreport) throw new NotFoundException('Not found')
+  async findOne(id: string): Promise<Bugreport> {
+    const oneBugreport = await this.bugreportRepository.findOne(id)
+    console.log(oneBugreport)
+    if (oneBugreport == undefined) throw new NotFoundException('Bugreport not found')
     return oneBugreport
   }
 
@@ -24,6 +25,8 @@ export class BugreportsService {
     const newBugreport = new Bugreport()
     newBugreport.text = bugreport.text
     newBugreport.title = bugreport.title
+    newBugreport.author = bugreport.author
+    newBugreport.assigned = bugreport.assigned
     await this.bugreportRepository.save(newBugreport)
   }
 
